@@ -6,13 +6,12 @@
 //
 
 #import <React/RCTBridgeModule.h>
+#import <React/RCTEventEmitter.h>
 #import "SHCommand.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RCTTerminalModule : NSObject <RCTBridgeModule, SHCommandDelegate> {
-  SHCommand*  m_command;
-}
+@interface RCTTerminalModule : RCTEventEmitter <RCTBridgeModule, SHCommandDelegate>
 
 @end
 

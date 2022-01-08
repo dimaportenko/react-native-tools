@@ -9,7 +9,10 @@
 
 #import <React/RCTLog.h>
 
-@implementation RCTTerminalModule
+@implementation RCTTerminalModule {
+  bool hasListeners;
+  SHCommand*  mCommand;
+}
 
 RCT_EXPORT_MODULE();
 
@@ -24,25 +27,44 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   
   NSArray* arrayArguments = @[@"-c", commandString];
   
-//  if ([[[self textArguments] stringValue] length] > 0)
-//  {
-//      arrayArguments = [[[self textArguments] stringValue] componentsSeparatedByString:@","];
-//  }
+  //  if ([[[self textArguments] stringValue] length] > 0)
+  //  {
+  //      arrayArguments = [[[self textArguments] stringValue] componentsSeparatedByString:@","];
+  //  }
   
-  if (m_command)
+  if (mCommand)
   {
-      if ([m_command isExecuting])
-      {
-          [m_command stopExecuting];
-      }
+    if ([mCommand isExecuting])
+    {
+      [mCommand stopExecuting];
+    }
   }
   
-//  NSLog(@"textCommand - %@, withArguments - %@", [[self textCommand] stringValue], arrayArguments);
-  m_command = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
-  [m_command execute];
+  //  NSLog(@"textCommand - %@, withArguments - %@", [[self textCommand] stringValue], arrayArguments);
+  mCommand = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
+  [mCommand execute];
   
-//  [[self progressExecuting] startAnimation:self];
-//  [[self progressExecuting] setHidden:NO];
+  //  [[self progressExecuting] startAnimation:self];
+  //  [[self progressExecuting] setHidden:NO];
+}
+
+#pragma mark - RCTEventEmitter
+
+// Will be called when this module's first listener is added.
+-(void) startObserving {
+  hasListeners = YES;
+  // Set up any upstream listeners or background tasks as necessary
+}
+
+// Will be called when this module's last listener is removed, or on dealloc.
+-(void) stopObserving {
+  hasListeners = NO;
+  // Remove upstream listeners, stop unnecessary background tasks
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"CommandOutput"];
 }
 
 #pragma mark - SHCommandDelegate
@@ -64,6 +86,9 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   RCTLogInfo(@"outputData: %@", szOutput);
   
   //    [[self textOutput] setStringValue:szOutput];
+  if (hasListeners) { // Only send events if anyone is listening
+    [self sendEventWithName:@"CommandOutput" body:@{@"outputText": szOutput}];
+  }
 }
 
 - (void) errorData:(NSData *)data providedByCommand:(SHCommand *)command

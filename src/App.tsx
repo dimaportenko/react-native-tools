@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
   SafeAreaView,
@@ -20,16 +20,10 @@ import {
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
-import {Terminal} from './native/terminal';
+import {Terminal, TerminalEvent} from './native/terminal';
 
 const Section: React.FC<{
   title: string;
@@ -70,10 +64,24 @@ const App = () => {
 const AppContainer = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
+  const [output, setOutput] = useState('');
+  const [command, setCommand] = useState('cd ~/work && ls -la');
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+  useEffect(() => {
+    const outputListener = Terminal.addEventListener(
+      TerminalEvent.CommandOutput,
+      ({outputText}) => {
+        setOutput(output + outputText);
+      },
+    );
+    return () => {
+      Terminal.removeSubscription(outputListener);
+    };
+  }, []);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -92,9 +100,12 @@ const AppContainer = observer(() => {
           <Button
             title={'Test'}
             onPress={() => {
-              Terminal.runCommand('cd ~/work && ls -la');
+              setOutput('');
+              Terminal.runCommand(command);
             }}
           />
+
+          <Section title={command}>{`Output: \n ${output}`}</Section>
         </View>
       </ScrollView>
     </SafeAreaView>

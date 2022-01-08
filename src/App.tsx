@@ -10,6 +10,7 @@
 
 import React from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -28,6 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
+import {Terminal} from './native/terminal';
 
 const Section: React.FC<{
   title: string;
@@ -86,6 +88,13 @@ const AppContainer = observer(() => {
           <Section title={project.current?.name ?? ''}>
             {`Project root path: ${project.current?.path}`}
           </Section>
+
+          <Button
+            title={'Test'}
+            onPress={() => {
+              Terminal.runCommand('cd ~/work && ls -la');
+            }}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

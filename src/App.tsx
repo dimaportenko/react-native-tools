@@ -24,6 +24,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
 import {Terminal, TerminalEvent} from './native/terminal';
+import { usePrevious } from "./utils/usePrevious";
 
 const Section: React.FC<{
   title: string;
@@ -65,23 +66,35 @@ const AppContainer = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
   const [output, setOutput] = useState('');
-  const [command, setCommand] = useState('cd ~/work && ls -la');
+  const [lastOutput, setLastOutput] = useState('');
+  // const [command, setCommand] = useState('cd ~/work && ls -la');
+  const [command, setCommand] = useState('ping google.com');
+
+  const prevLastOutput = usePrevious(lastOutput);
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkMode ? Colors.black : Colors.white,
+    flex: 1,
   };
 
   useEffect(() => {
     const outputListener = Terminal.addEventListener(
       TerminalEvent.CommandOutput,
       ({outputText}) => {
-        setOutput(output + outputText);
+        setLastOutput(outputText);
       },
     );
     return () => {
       Terminal.removeSubscription(outputListener);
     };
   }, []);
+
+  useEffect(() => {
+    if (lastOutput !== prevLastOutput) {
+      setOutput(output + lastOutput);
+    }
+  }, [lastOutput, output, prevLastOutput]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -92,6 +105,7 @@ const AppContainer = observer(() => {
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            flex: 1,
           }}>
           <Section title={project.current?.name ?? ''}>
             {`Project root path: ${project.current?.path}`}

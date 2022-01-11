@@ -10,6 +10,7 @@
 #import <React/RCTLog.h>
 
 static NSString *const EVENT_COMMAND_OUTPUT = @"EVENT_COMMAND_OUTPUT";
+static NSString *const EVENT_COMMAND_FINISHED = @"EVENT_COMMAND_FINISHED";
 
 @implementation RCTTerminalModule {
   bool hasListeners;
@@ -21,6 +22,19 @@ RCT_EXPORT_MODULE();
 - (dispatch_queue_t)methodQueue
 {
   return dispatch_get_main_queue();
+}
+
+RCT_EXPORT_METHOD(stopCommand)
+{
+  RCTLogInfo(@"stopCommand");
+  
+  if (mCommand)
+  {
+    if ([mCommand isExecuting])
+    {
+      [mCommand stopExecuting];
+    }
+  }
 }
 
 RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
@@ -66,7 +80,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[EVENT_COMMAND_OUTPUT];
+  return @[EVENT_COMMAND_OUTPUT, EVENT_COMMAND_FINISHED];
 }
 
 #pragma mark - SHCommandDelegate
@@ -78,6 +92,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   //    [[self progressExecuting] setHidden:YES];
   //
   //    [[self textOutput] setStringValue:[NSString stringWithFormat:@"FINISHED: Exit Code %d", iExitCode]];
+  [self sendEventWithName:EVENT_COMMAND_FINISHED body:@{@"code": [NSNumber numberWithInt:iExitCode]}];
   RCTLogInfo(@"FINISHED: Exit Code %d", iExitCode);
 }
 

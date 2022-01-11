@@ -24,7 +24,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
 import {Terminal, TerminalEvent} from './native/terminal';
-import { usePrevious } from "./utils/usePrevious";
+import {usePrevious} from './utils/usePrevious';
 
 const Section: React.FC<{
   title: string;
@@ -66,6 +66,7 @@ const AppContainer = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
   const [output, setOutput] = useState('');
+  const [isRunning, setIsRuning] = useState(false);
   const [lastOutput, setLastOutput] = useState('');
   // const [command, setCommand] = useState('cd ~/work && ls -la');
   const [command, setCommand] = useState('ping google.com');
@@ -85,8 +86,15 @@ const AppContainer = observer(() => {
         setLastOutput(outputText);
       },
     );
+    const finishListener = Terminal.addEventListener(
+      TerminalEvent.EVENT_COMMAND_FINISHED,
+      () => {
+        setIsRuning(false);
+      },
+    );
     return () => {
       Terminal.removeSubscription(outputListener);
+      Terminal.removeSubscription(finishListener);
     };
   }, []);
 
@@ -112,12 +120,29 @@ const AppContainer = observer(() => {
           </Section>
 
           <Button
-            title={'Test'}
+            title={'Start'}
             onPress={() => {
               setOutput('');
+              setIsRuning(true);
               Terminal.runCommand(command);
             }}
           />
+
+          <Button
+            title={'Stop'}
+            onPress={() => {
+              Terminal.stopCommand();
+            }}
+          />
+
+          <View style={{alignItems: 'center', marginTop: 10}}>
+            <View
+              style={[
+                styles.status,
+                {backgroundColor: isRunning ? 'green' : 'red'},
+              ]}
+            />
+          </View>
 
           <Section title={command}>{`Output: \n ${output}`}</Section>
         </View>
@@ -142,6 +167,12 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  status: {
+    backgroundColor: 'gray',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 });
 

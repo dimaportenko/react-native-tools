@@ -7,6 +7,7 @@ import {
 const {TerminalModule} = NativeModules;
 
 type TerminalModuleType = {
+  stopCommand: () => void;
   runCommand: (command: string) => void;
   addEventListener(
     event: TerminalEvent,
@@ -19,6 +20,7 @@ const emitter = new NativeEventEmitter(TerminalModule);
 
 export enum TerminalEvent {
   EVENT_COMMAND_OUTPUT = 'EVENT_COMMAND_OUTPUT',
+  EVENT_COMMAND_FINISHED = 'EVENT_COMMAND_FINISHED',
 }
 
 function addEventListener(
@@ -30,6 +32,7 @@ function addEventListener(
 
 export const Terminal: TerminalModuleType = {
   runCommand: TerminalModule.runCommand,
+  stopCommand: TerminalModule.stopCommand,
   addEventListener,
   removeSubscription: emitter.removeSubscription,
 };

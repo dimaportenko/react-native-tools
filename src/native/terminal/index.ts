@@ -18,7 +18,7 @@ type TerminalModuleType = {
 const emitter = new NativeEventEmitter(TerminalModule);
 
 export enum TerminalEvent {
-  CommandOutput = 'CommandOutput',
+  EVENT_COMMAND_OUTPUT = 'EVENT_COMMAND_OUTPUT',
 }
 
 function addEventListener(

@@ -9,9 +9,11 @@
 
 #import <React/RCTLog.h>
 
+static NSString *const EVENT_COMMAND_OUTPUT = @"EVENT_COMMAND_OUTPUT";
+
 @implementation RCTTerminalModule {
   bool hasListeners;
-  SHCommand*  mCommand;
+  SHCommand* mCommand;
 }
 
 RCT_EXPORT_MODULE();
@@ -64,7 +66,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"CommandOutput"];
+  return @[EVENT_COMMAND_OUTPUT];
 }
 
 #pragma mark - SHCommandDelegate
@@ -87,7 +89,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   
   //    [[self textOutput] setStringValue:szOutput];
   if (hasListeners) { // Only send events if anyone is listening
-    [self sendEventWithName:@"CommandOutput" body:@{@"outputText": szOutput}];
+    [self sendEventWithName:EVENT_COMMAND_OUTPUT body:@{@"outputText": szOutput}];
   }
 }
 

@@ -80,7 +80,7 @@ const AppContainer = observer(() => {
 
   useEffect(() => {
     const outputListener = Terminal.addEventListener(
-      TerminalEvent.CommandOutput,
+      TerminalEvent.EVENT_COMMAND_OUTPUT,
       ({outputText}) => {
         setLastOutput(outputText);
       },

@@ -43,11 +43,6 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   
   NSArray* arrayArguments = @[@"-c", commandString];
   
-  //  if ([[[self textArguments] stringValue] length] > 0)
-  //  {
-  //      arrayArguments = [[[self textArguments] stringValue] componentsSeparatedByString:@","];
-  //  }
-  
   if (mCommand)
   {
     if ([mCommand isExecuting])
@@ -59,9 +54,6 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   //  NSLog(@"textCommand - %@, withArguments - %@", [[self textCommand] stringValue], arrayArguments);
   mCommand = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
   [mCommand execute];
-  
-  //  [[self progressExecuting] startAnimation:self];
-  //  [[self progressExecuting] setHidden:NO];
 }
 
 #pragma mark - RCTEventEmitter
@@ -88,10 +80,6 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
 
 - (void) commandDidFinish:(SHCommand *)command withExitCode:(int)iExitCode
 {
-  //    [[self progressExecuting] stopAnimation:self];
-  //    [[self progressExecuting] setHidden:YES];
-  //
-  //    [[self textOutput] setStringValue:[NSString stringWithFormat:@"FINISHED: Exit Code %d", iExitCode]];
   [self sendEventWithName:EVENT_COMMAND_FINISHED body:@{@"code": [NSNumber numberWithInt:iExitCode]}];
   RCTLogInfo(@"FINISHED: Exit Code %d", iExitCode);
 }
@@ -102,7 +90,6 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   
   RCTLogInfo(@"outputData: %@", szOutput);
   
-  //    [[self textOutput] setStringValue:szOutput];
   if (hasListeners) { // Only send events if anyone is listening
     [self sendEventWithName:EVENT_COMMAND_OUTPUT body:@{@"outputText": szOutput}];
   }

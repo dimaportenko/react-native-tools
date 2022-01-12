@@ -23,8 +23,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
-import {Terminal, TerminalEvent} from './native/terminal';
-import {usePrevious} from './utils/usePrevious';
+import {useCommand} from './native/terminal/useCommand';
 
 const Section: React.FC<{
   title: string;
@@ -65,44 +64,18 @@ const App = () => {
 const AppContainer = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
-  const [output, setOutput] = useState('');
-  const [isRunning, setIsRuning] = useState(false);
-  const [lastOutput, setLastOutput] = useState('');
   // const [command, setCommand] = useState('cd ~/work && ls -la');
-  const [command, setCommand] = useState('ping google.com');
+  const [commandValue] = useState('ping google.com');
 
-  const prevLastOutput = usePrevious(lastOutput);
+  const {start, stop, output, isRunning} = useCommand({
+    commandValue,
+  });
 
   const backgroundStyle = {
     // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
     backgroundColor: isDarkMode ? Colors.black : Colors.white,
     flex: 1,
   };
-
-  useEffect(() => {
-    const outputListener = Terminal.addEventListener(
-      TerminalEvent.EVENT_COMMAND_OUTPUT,
-      ({outputText}) => {
-        setLastOutput(outputText);
-      },
-    );
-    const finishListener = Terminal.addEventListener(
-      TerminalEvent.EVENT_COMMAND_FINISHED,
-      () => {
-        setIsRuning(false);
-      },
-    );
-    return () => {
-      Terminal.removeSubscription(outputListener);
-      Terminal.removeSubscription(finishListener);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (lastOutput !== prevLastOutput) {
-      setOutput(output + lastOutput);
-    }
-  }, [lastOutput, output, prevLastOutput]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -119,21 +92,9 @@ const AppContainer = observer(() => {
             {`Project root path: ${project.current?.path}`}
           </Section>
 
-          <Button
-            title={'Start'}
-            onPress={() => {
-              setOutput('');
-              setIsRuning(true);
-              Terminal.runCommand(command);
-            }}
-          />
+          <Button title={'Start'} onPress={start} />
 
-          <Button
-            title={'Stop'}
-            onPress={() => {
-              Terminal.stopCommand();
-            }}
-          />
+          <Button title={'Stop'} onPress={stop} />
 
           <View style={{alignItems: 'center', marginTop: 10}}>
             <View
@@ -144,7 +105,7 @@ const AppContainer = observer(() => {
             />
           </View>
 
-          <Section title={command}>{`Output: \n ${output}`}</Section>
+          <Section title={commandValue}>{`Output: \n ${output}`}</Section>
         </View>
       </ScrollView>
     </SafeAreaView>

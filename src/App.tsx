@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {
   Button,
   SafeAreaView,
@@ -24,6 +24,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
 import {useCommand} from './native/terminal/useCommand';
+import {ProjectStore} from './store/ProjectStore';
 
 const Section: React.FC<{
   title: string;
@@ -61,15 +62,50 @@ const App = () => {
   );
 };
 
+const CommandComponent: FC<{
+  project: ProjectStore;
+  commandValue: string;
+  commandKey: string;
+}> = ({commandValue, commandKey, ...props}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const {start, stop, output, isRunning} = useCommand({
+    commandValue,
+    commandKey,
+  });
+
+  return (
+    <View
+      style={{
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        flex: 1,
+      }}>
+      <Section title={props.project.current?.name ?? ''}>
+        {`Project root path: ${props.project.current?.path}`}
+      </Section>
+
+      <Button title={'Start'} onPress={start} />
+
+      <Button title={'Stop'} onPress={stop} />
+
+      <View style={{alignItems: 'center', marginTop: 10}}>
+        <View
+          style={[
+            styles.status,
+            {backgroundColor: isRunning ? 'green' : 'red'},
+          ]}
+        />
+      </View>
+
+      <Section title={commandValue}>{`Output: \n ${output}`}</Section>
+    </View>
+  );
+};
+
 const AppContainer = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
   // const [command, setCommand] = useState('cd ~/work && ls -la');
-  const [commandValue] = useState('ping google.com');
-
-  const {start, stop, output, isRunning} = useCommand({
-    commandValue,
-  });
 
   const backgroundStyle = {
     // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -83,30 +119,16 @@ const AppContainer = observer(() => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            flex: 1,
-          }}>
-          <Section title={project.current?.name ?? ''}>
-            {`Project root path: ${project.current?.path}`}
-          </Section>
-
-          <Button title={'Start'} onPress={start} />
-
-          <Button title={'Stop'} onPress={stop} />
-
-          <View style={{alignItems: 'center', marginTop: 10}}>
-            <View
-              style={[
-                styles.status,
-                {backgroundColor: isRunning ? 'green' : 'red'},
-              ]}
-            />
-          </View>
-
-          <Section title={commandValue}>{`Output: \n ${output}`}</Section>
-        </View>
+        <CommandComponent
+          commandKey="command 1"
+          project={project}
+          commandValue={'ping google.com'}
+        />
+        <CommandComponent
+          commandKey="command 2"
+          project={project}
+          commandValue={'ping yahoo.com'}
+        />
       </ScrollView>
     </SafeAreaView>
   );

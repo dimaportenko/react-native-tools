@@ -14,7 +14,14 @@ static NSString *const EVENT_COMMAND_FINISHED = @"EVENT_COMMAND_FINISHED";
 
 @implementation RCTTerminalModule {
   bool hasListeners;
-  SHCommand* mCommand;
+  NSMutableDictionary *_commandsDict;
+}
+
+- (NSMutableDictionary *)commandsDict {
+    if (!_commandsDict) {
+      _commandsDict = [NSMutableDictionary new];
+    }
+    return _commandsDict;
 }
 
 RCT_EXPORT_MODULE();
@@ -24,36 +31,35 @@ RCT_EXPORT_MODULE();
   return dispatch_get_main_queue();
 }
 
-RCT_EXPORT_METHOD(stopCommand)
+RCT_EXPORT_METHOD(stopCommand:(NSString *) key)
 {
   RCTLogInfo(@"stopCommand");
-  
-  if (mCommand)
+  SHCommand *command = [self commandForKey:key];
+  if (command)
   {
-    if ([mCommand isExecuting])
+    if ([command isExecuting])
     {
-      [mCommand stopExecuting];
+      [command stopExecuting];
     }
   }
 }
 
-RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
-{
-  RCTLogInfo(@"runCommand: %@", commandString);
-  
+RCT_EXPORT_METHOD(runCommand:(NSString *)commandString withKey:(NSString *)key) {
+
   NSArray* arrayArguments = @[@"-c", commandString];
   
-  if (mCommand)
-  {
-    if ([mCommand isExecuting])
-    {
-      [mCommand stopExecuting];
-    }
-  }
+  SHCommand *command = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
   
-  //  NSLog(@"textCommand - %@, withArguments - %@", [[self textCommand] stringValue], arrayArguments);
-  mCommand = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
-  [mCommand execute];
+  [[self commandsDict] setObject:command forKey:key];
+  [command execute];
+}
+
+- (SHCommand *)commandForKey:(NSString *)key {
+    return [[self commandsDict] objectForKey:key];
+}
+
+- (NSString *)keyForCommand:(SHCommand *)command {
+    return [[[self commandsDict] allKeysForObject:command] firstObject];
 }
 
 #pragma mark - RCTEventEmitter
@@ -80,7 +86,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
 
 - (void) commandDidFinish:(SHCommand *)command withExitCode:(int)iExitCode
 {
-  [self sendEventWithName:EVENT_COMMAND_FINISHED body:@{@"code": [NSNumber numberWithInt:iExitCode]}];
+  [self sendEventWithName:EVENT_COMMAND_FINISHED body:@{@"code": [NSNumber numberWithInt:iExitCode], @"key": [self keyForCommand:command]}];
   RCTLogInfo(@"FINISHED: Exit Code %d", iExitCode);
 }
 
@@ -91,7 +97,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString)
   RCTLogInfo(@"outputData: %@", szOutput);
   
   if (hasListeners) { // Only send events if anyone is listening
-    [self sendEventWithName:EVENT_COMMAND_OUTPUT body:@{@"outputText": szOutput}];
+    [self sendEventWithName:EVENT_COMMAND_OUTPUT body:@{@"outputText": szOutput, @"key": [self keyForCommand:command]}];
   }
 }
 

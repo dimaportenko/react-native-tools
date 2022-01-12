@@ -10,11 +10,13 @@ export type UseCommandResult = {
 };
 
 export type UseCommandProps = {
+  commandKey: string;
   commandValue: string;
 };
 
 export const useCommand = ({
   commandValue,
+  commandKey,
 }: UseCommandProps): UseCommandResult => {
   const [output, setOutput] = useState('');
   const [isRunning, setIsRuning] = useState(false);
@@ -26,14 +28,18 @@ export const useCommand = ({
   useEffect(() => {
     const outputListener = Terminal.addEventListener(
       TerminalEvent.EVENT_COMMAND_OUTPUT,
-      ({outputText}) => {
-        setLastOutput(outputText);
+      ({outputText, key}) => {
+        if (key === commandKey) {
+          setLastOutput(outputText);
+        }
       },
     );
     const finishListener = Terminal.addEventListener(
       TerminalEvent.EVENT_COMMAND_FINISHED,
-      () => {
-        setIsRuning(false);
+      ({key}) => {
+        if (key === commandKey) {
+          setIsRuning(false);
+        }
       },
     );
     return () => {
@@ -51,11 +57,11 @@ export const useCommand = ({
   const start = () => {
     setOutput('');
     setIsRuning(true);
-    Terminal.runCommand(commandValue);
+    Terminal.runCommand(commandValue, commandKey);
   };
 
   const stop = () => {
-    Terminal.stopCommand();
+    Terminal.stopCommand(commandKey);
   };
 
   return {

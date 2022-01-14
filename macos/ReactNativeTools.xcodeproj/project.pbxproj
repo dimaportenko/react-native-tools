@@ -16,6 +16,7 @@
 		514201522437B4B40078DB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 514201512437B4B40078DB4F /* Assets.xcassets */; };
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
 		514201582437B4B40078DB4F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 514201572437B4B40078DB4F /* main.m */; };
+		66D770C82792119B00E3137A /* RCTPathPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D770C72792119B00E3137A /* RCTPathPicker.m */; };
 		66FD1D1727887C7B00F80B46 /* RCTTerminalModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD1D1627887C7B00F80B46 /* RCTTerminalModule.m */; };
 		66FD1D1A2789B27900F80B46 /* SHCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD1D192789B27900F80B46 /* SHCommand.m */; };
 		8E40BC7185D862B9A91F1E65 /* libPods-ReactNativeTools-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BE09B6B3B1B16A5A1887A95 /* libPods-ReactNativeTools-iOS.a */; };
@@ -47,6 +48,8 @@
 		514201572437B4B40078DB4F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		514201592437B4B40078DB4F /* ReactNativeTools.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactNativeTools.entitlements; sourceTree = "<group>"; };
 		58FAB8EE694A32AECD5EE78C /* Pods-ReactNativeTools-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTools-macOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeTools-macOS/Pods-ReactNativeTools-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		66D770C62792119B00E3137A /* RCTPathPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTPathPicker.h; sourceTree = "<group>"; };
+		66D770C72792119B00E3137A /* RCTPathPicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTPathPicker.m; sourceTree = "<group>"; };
 		66FD1D1527887C7B00F80B46 /* RCTTerminalModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTerminalModule.h; sourceTree = "<group>"; };
 		66FD1D1627887C7B00F80B46 /* RCTTerminalModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTTerminalModule.m; sourceTree = "<group>"; };
 		66FD1D182789B27800F80B46 /* SHCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCommand.h; sourceTree = "<group>"; };
@@ -123,6 +126,7 @@
 		5142014A2437B4B30078DB4F /* ReactNativeTools-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				66D770C527920EB400E3137A /* pathpicker */,
 				66FD1D1427887C2300F80B46 /* terminal */,
 				38423A3E24576CBC00BC2EAC /* main.jsbundle */,
 				5142014B2437B4B30078DB4F /* AppDelegate.h */,
@@ -136,6 +140,15 @@
 				514201592437B4B40078DB4F /* ReactNativeTools.entitlements */,
 			);
 			path = "ReactNativeTools-macOS";
+			sourceTree = "<group>";
+		};
+		66D770C527920EB400E3137A /* pathpicker */ = {
+			isa = PBXGroup;
+			children = (
+				66D770C62792119B00E3137A /* RCTPathPicker.h */,
+				66D770C72792119B00E3137A /* RCTPathPicker.m */,
+			);
+			path = pathpicker;
 			sourceTree = "<group>";
 		};
 		66FD1D1427887C2300F80B46 /* terminal */ = {
@@ -467,6 +480,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66D770C82792119B00E3137A /* RCTPathPicker.m in Sources */,
 				514201502437B4B30078DB4F /* ViewController.m in Sources */,
 				66FD1D1727887C7B00F80B46 /* RCTTerminalModule.m in Sources */,
 				514201582437B4B40078DB4F /* main.m in Sources */,

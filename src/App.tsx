@@ -25,6 +25,7 @@ import {rootStore, StoreProvider, useStore} from './store';
 import {observer} from 'mobx-react-lite';
 import {useCommand} from './native/terminal/useCommand';
 import {ProjectStore} from './store/ProjectStore';
+import {PathPicker} from './native/pathpicker';
 
 const Section: React.FC<{
   title: string;
@@ -113,9 +114,22 @@ const AppContainer = observer(() => {
     flex: 1,
   };
 
+  const getDir = async () => {
+    try {
+      const path = await PathPicker.getDirectoryPath();
+      console.log(path);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Button
+        title="Add Project"
+        onPress={getDir}
+      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>

@@ -8,8 +8,9 @@
  * @format
  */
 
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
+  ActivityIndicator,
   Button,
   SafeAreaView,
   ScrollView,
@@ -21,7 +22,7 @@ import {
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {rootStore, StoreProvider, useStore} from './store';
+import {rootStore, StoreProvider, trunk, useStore} from './store';
 import {observer} from 'mobx-react-lite';
 import {useCommand} from './native/terminal/useCommand';
 import {ProjectStore} from './store/ProjectStore';
@@ -56,11 +57,29 @@ const Section: React.FC<{
 };
 
 const App = () => {
-  return (
-    <StoreProvider value={rootStore}>
-      <AppContainer />
-    </StoreProvider>
-  );
+  const [isStoreLoaded, setIsStoreLoaded] = useState(false);
+
+  useEffect(() => {
+    const rehydrate = async () => {
+      await trunk.init();
+      setIsStoreLoaded(true);
+    };
+    rehydrate();
+  }, []);
+
+  if (!isStoreLoaded) {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  } else {
+    return (
+      <StoreProvider value={rootStore}>
+        <AppContainer />
+      </StoreProvider>
+    );
+  }
 };
 
 const CommandComponent: FC<{
@@ -126,10 +145,7 @@ const AppContainer = observer(() => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Button
-        title="Add Project"
-        onPress={getDir}
-      />
+      <Button title="Add Project" onPress={getDir} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>

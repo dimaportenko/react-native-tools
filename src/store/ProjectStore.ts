@@ -12,17 +12,25 @@ export class Project {
   }
 }
 
-const testProject = new Project(
-  '/Users/dmytro/work/plab/react-native/ReactNativeTools',
-);
-
 export class ProjectStore {
-  projects: Project[] = [testProject];
-  current: Project | undefined;
+  projects: Project[] = [];
+  current: Project | undefined = undefined;
 
   constructor() {
-    this.current = testProject;
-
     makeAutoObservable(this);
+  }
+
+  addProjectByPath(path: string) {
+    const project = new Project(path);
+
+    const found = this.projects.find(proj => proj.path === project.path);
+    if (!found) {
+      // this.projects.push(project);
+      this.projects = [...this.projects, project];
+    }
+
+    if (!this.current) {
+      this.current = found || project;
+    }
   }
 }

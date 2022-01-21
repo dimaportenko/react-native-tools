@@ -1,7 +1,12 @@
-import {ProjectStore} from './ProjectStore';
 import {createContext, useContext} from 'react';
 import {AsyncTrunk} from 'mobx-sync';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {ProjectStore} from './ProjectStore';
+
+// AsyncStorage.clear(error => {
+//   console.warn(error);
+// });
 
 export class RootStore {
   project: ProjectStore;

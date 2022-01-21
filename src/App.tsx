@@ -8,18 +8,20 @@
  * @format
  */
 
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   useColorScheme,
   View,
 } from 'react-native';
+
+import {useDeviceContext} from 'twrnc';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {rootStore, StoreProvider, trunk, useStore} from './store';
@@ -27,6 +29,8 @@ import {observer} from 'mobx-react-lite';
 import {useCommand} from './native/terminal/useCommand';
 import {ProjectStore} from './store/ProjectStore';
 import {PathPicker} from './native/pathpicker';
+import {Text} from './components/ui/Text';
+import tw from './lib/tailwind';
 
 const Section: React.FC<{
   title: string;
@@ -58,6 +62,7 @@ const Section: React.FC<{
 
 const App = () => {
   const [isStoreLoaded, setIsStoreLoaded] = useState(false);
+  useDeviceContext(tw);
 
   useEffect(() => {
     const rehydrate = async () => {
@@ -69,7 +74,7 @@ const App = () => {
 
   if (!isStoreLoaded) {
     return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <View style={tw`flex-1 justify-center`}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -123,6 +128,52 @@ const CommandComponent: FC<{
 };
 
 const AppContainer = observer(() => {
+  const {project} = useStore();
+  console.warn(project.projects.length);
+
+  const getDir = async () => {
+    try {
+      const path = await PathPicker.getDirectoryPath();
+      console.log(path);
+      project.addProjectByPath(path);
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Error', error?.message);
+    }
+  };
+
+  if (!project.current) {
+    return (
+      <View
+        style={tw`flex-1 items-center justify-center bg-white dark:bg-black`}>
+        <Text style={tw`font-18`}>No projects are added yet</Text>
+        <Button title="Add Project" onPress={getDir} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={tw`flex-1 bg-white dark:bg-black`}>
+      <View style={tw`max-w-200px bg-blue-100`}>
+        <View style={tw``}>
+          {project.projects.map(proj => {
+            console.warn(proj.name);
+            return (
+              <View key={`${proj.path}`} style={tw`pt-5px pl-5px`}>
+                <Text>{proj.name}</Text>
+              </View>
+            );
+          })}
+        </View>
+        {/*<Text>{project.current.name}</Text>*/}
+        <View style={tw`flex-1`} />
+        <Button title="Add Project" onPress={getDir} />
+      </View>
+    </View>
+  );
+});
+
+const AppContainerOld = observer(() => {
   const {project} = useStore();
   const isDarkMode = useColorScheme() === 'dark';
   // const [command, setCommand] = useState('cd ~/work && ls -la');

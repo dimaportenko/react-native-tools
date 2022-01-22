@@ -9,3 +9,18 @@ type PathPickerType = {
 export const PathPicker: PathPickerType = {
   ...PathPickerModule,
 };
+
+export const usePathPicker = () => {
+  const getDirectoryPath = () => {
+    try {
+      return PathPickerModule.getDirectoryPath();
+    } catch (error) {
+      console.log(error);
+    }
+    return null;
+  };
+
+  return {
+    getDirectoryPath,
+  };
+};

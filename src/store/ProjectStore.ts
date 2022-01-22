@@ -17,6 +17,8 @@ export class ProjectStore {
   current: Project | undefined = undefined;
 
   constructor() {
+    this.projects = [];
+    this.current = undefined;
     makeAutoObservable(this);
   }
 
@@ -32,5 +34,9 @@ export class ProjectStore {
     if (!this.current) {
       this.current = found || project;
     }
+  }
+
+  setCurrentProject(project: Project) {
+    this.current = project;
   }
 }

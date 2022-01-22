@@ -31,6 +31,9 @@ import {ProjectStore} from './store/ProjectStore';
 import {PathPicker} from './native/pathpicker';
 import {Text} from './components/ui/Text';
 import tw from './lib/tailwind';
+import VisualEffectView from './native/visualeffect/VisualEffectView';
+import {SideBar} from './components/sidebar/SideBar';
+import { DetailsView } from "./components/details/DetailsView";
 
 const Section: React.FC<{
   title: string;
@@ -128,47 +131,12 @@ const CommandComponent: FC<{
 };
 
 const AppContainer = observer(() => {
-  const {project} = useStore();
-  console.warn(project.projects.length);
-
-  const getDir = async () => {
-    try {
-      const path = await PathPicker.getDirectoryPath();
-      console.log(path);
-      project.addProjectByPath(path);
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', error?.message);
-    }
-  };
-
-  if (!project.current) {
-    return (
-      <View
-        style={tw`flex-1 items-center justify-center bg-white dark:bg-black`}>
-        <Text style={tw`font-18`}>No projects are added yet</Text>
-        <Button title="Add Project" onPress={getDir} />
-      </View>
-    );
-  }
-
   return (
-    <View style={tw`flex-1 bg-white dark:bg-black`}>
-      <View style={tw`max-w-200px bg-blue-100`}>
-        <View style={tw``}>
-          {project.projects.map(proj => {
-            console.warn(proj.name);
-            return (
-              <View key={`${proj.path}`} style={tw`pt-5px pl-5px`}>
-                <Text>{proj.name}</Text>
-              </View>
-            );
-          })}
-        </View>
-        {/*<Text>{project.current.name}</Text>*/}
-        <View style={tw`flex-1`} />
-        <Button title="Add Project" onPress={getDir} />
+    <View style={tw`flex-row h-100%`}>
+      <View style={tw`max-w-250px min-w-140px flex-col-reverse`}>
+        <SideBar />
       </View>
+      <DetailsView />
     </View>
   );
 });

@@ -2,8 +2,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        light: {DEFAULT: 'rgba(251, 251, 251, 0.98)'},
-        dark: {DEFAULT: 'rgba(39, 40, 43, 0.98)'},
+        selection: {
+          l: 'rgba(0,0,0, 0.1)',
+          d: 'rgba(255,255,255, 0.1)',
+        },
         gray: {
           10: '#FCFCFC',
           50: '#F7F9F9',
@@ -19,4 +21,4 @@ module.exports = {
       },
     },
   },
-}
+};

@@ -43,11 +43,7 @@ export const SideBarItem = observer(
           ]}>
           <Image
             source={getIconSource()}
-            style={{
-              width: 16,
-              height: 16,
-              tintColor: '#178cff',
-            }}
+            style={tw.style({tintColor: '#178cff'}, 'w-20px h-20px')}
             resizeMode="contain"
           />
           <Spacer size={7} />

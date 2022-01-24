@@ -6,6 +6,10 @@ module.exports = {
           l: 'rgba(0,0,0, 0.1)',
           d: 'rgba(255,255,255, 0.1)',
         },
+        pressed: {
+          l: 'rgba(0,0,0, 0.2)',
+          d: 'rgba(255,255,255, 0.2)',
+        },
         gray: {
           10: '#FCFCFC',
           50: '#F7F9F9',

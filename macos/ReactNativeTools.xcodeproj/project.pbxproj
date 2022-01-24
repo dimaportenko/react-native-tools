@@ -17,6 +17,8 @@
 		514201552437B4B40078DB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 514201532437B4B40078DB4F /* Main.storyboard */; };
 		514201582437B4B40078DB4F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 514201572437B4B40078DB4F /* main.m */; };
 		66A34D26279C124100C6B892 /* RNVisualEffectViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 66A34D25279C124100C6B892 /* RNVisualEffectViewManager.m */; };
+		66A34D2A279D962600C6B892 /* RNNSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 66A34D29279D962600C6B892 /* RNNSButton.m */; };
+		66A34D2C279D975400C6B892 /* RNNSButtonViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 66A34D2B279D975400C6B892 /* RNNSButtonViewManager.m */; };
 		66D770C82792119B00E3137A /* RCTPathPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 66D770C72792119B00E3137A /* RCTPathPicker.m */; };
 		66FD1D1727887C7B00F80B46 /* RCTTerminalModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD1D1627887C7B00F80B46 /* RCTTerminalModule.m */; };
 		66FD1D1A2789B27900F80B46 /* SHCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 66FD1D192789B27900F80B46 /* SHCommand.m */; };
@@ -50,6 +52,9 @@
 		514201592437B4B40078DB4F /* ReactNativeTools.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ReactNativeTools.entitlements; sourceTree = "<group>"; };
 		58FAB8EE694A32AECD5EE78C /* Pods-ReactNativeTools-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTools-macOS.release.xcconfig"; path = "Target Support Files/Pods-ReactNativeTools-macOS/Pods-ReactNativeTools-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		66A34D25279C124100C6B892 /* RNVisualEffectViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNVisualEffectViewManager.m; sourceTree = "<group>"; };
+		66A34D28279D962600C6B892 /* RNNSButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNNSButton.h; sourceTree = "<group>"; };
+		66A34D29279D962600C6B892 /* RNNSButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSButton.m; sourceTree = "<group>"; };
+		66A34D2B279D975400C6B892 /* RNNSButtonViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RNNSButtonViewManager.m; sourceTree = "<group>"; };
 		66D770C62792119B00E3137A /* RCTPathPicker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTPathPicker.h; sourceTree = "<group>"; };
 		66D770C72792119B00E3137A /* RCTPathPicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTPathPicker.m; sourceTree = "<group>"; };
 		66FD1D1527887C7B00F80B46 /* RCTTerminalModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTTerminalModule.h; sourceTree = "<group>"; };
@@ -128,6 +133,7 @@
 		5142014A2437B4B30078DB4F /* ReactNativeTools-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				66A34D27279D95FA00C6B892 /* buttons */,
 				66A34D24279C122700C6B892 /* rnviews */,
 				66D770C527920EB400E3137A /* pathpicker */,
 				66FD1D1427887C2300F80B46 /* terminal */,
@@ -151,6 +157,16 @@
 				66A34D25279C124100C6B892 /* RNVisualEffectViewManager.m */,
 			);
 			path = rnviews;
+			sourceTree = "<group>";
+		};
+		66A34D27279D95FA00C6B892 /* buttons */ = {
+			isa = PBXGroup;
+			children = (
+				66A34D28279D962600C6B892 /* RNNSButton.h */,
+				66A34D29279D962600C6B892 /* RNNSButton.m */,
+				66A34D2B279D975400C6B892 /* RNNSButtonViewManager.m */,
+			);
+			path = buttons;
 			sourceTree = "<group>";
 		};
 		66D770C527920EB400E3137A /* pathpicker */ = {
@@ -492,9 +508,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				66D770C82792119B00E3137A /* RCTPathPicker.m in Sources */,
+				66A34D2C279D975400C6B892 /* RNNSButtonViewManager.m in Sources */,
 				514201502437B4B30078DB4F /* ViewController.m in Sources */,
 				66A34D26279C124100C6B892 /* RNVisualEffectViewManager.m in Sources */,
 				66FD1D1727887C7B00F80B46 /* RCTTerminalModule.m in Sources */,
+				66A34D2A279D962600C6B892 /* RNNSButton.m in Sources */,
 				514201582437B4B40078DB4F /* main.m in Sources */,
 				66FD1D1A2789B27900F80B46 /* SHCommand.m in Sources */,
 				5142014D2437B4B30078DB4F /* AppDelegate.m in Sources */,
@@ -571,7 +589,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 34272862C82332F501D182EC /* Pods-ReactNativeTools-macOS.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon1;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = "ReactNativeTools-macos/Info.plist";
@@ -592,7 +611,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 58FAB8EE694A32AECD5EE78C /* Pods-ReactNativeTools-macOS.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon1;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = "ReactNativeTools-macos/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

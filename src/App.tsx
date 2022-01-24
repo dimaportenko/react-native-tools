@@ -8,10 +8,9 @@
  * @format
  */
 
-import React, {FC, useEffect, useMemo, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   ActivityIndicator,
-  Alert,
   Button,
   SafeAreaView,
   ScrollView,
@@ -31,9 +30,8 @@ import {ProjectStore} from './store/ProjectStore';
 import {PathPicker} from './native/pathpicker';
 import {Text} from './components/ui/Text';
 import tw from './lib/tailwind';
-import VisualEffectView from './native/visualeffect/VisualEffectView';
 import {SideBar} from './components/sidebar/SideBar';
-import { DetailsView } from "./components/details/DetailsView";
+import {DetailsView} from './components/details/DetailsView';
 
 const Section: React.FC<{
   title: string;

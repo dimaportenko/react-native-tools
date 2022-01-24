@@ -48,7 +48,7 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString withKey:(NSString *)key) 
 
   NSArray* arrayArguments = @[@"-c", commandString];
   
-  SHCommand *command = [SHCommand commandWithExecutablePath:@"/bin/sh" withArguments:arrayArguments withDelegate:self];
+  SHCommand *command = [SHCommand commandWithExecutablePath:@"/bin/bash" withArguments:arrayArguments withDelegate:self];
   
   [[self commandsDict] setObject:command forKey:key];
   [command execute];
@@ -103,7 +103,13 @@ RCT_EXPORT_METHOD(runCommand:(NSString *)commandString withKey:(NSString *)key) 
 
 - (void) errorData:(NSData *)data providedByCommand:(SHCommand *)command
 {
-  RCTLogInfo(@"ERROR: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+  NSString* szOutput = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+  RCTLogInfo(@"ERROR: %@", szOutput);
+  
+  if (hasListeners) { // Only send events if anyone is listening
+    [self sendEventWithName:EVENT_COMMAND_OUTPUT body:@{@"outputText": szOutput, @"key": [self keyForCommand:command]}];
+  }
+
 }
 
 @end

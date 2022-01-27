@@ -8,21 +8,18 @@ import {useStore} from '../../store';
 import {Text} from '../ui/Text';
 import tw from '../../lib/tailwind';
 import {HoverHighlighButton} from '../ui/HoverHighlighButton';
-import {useCommand} from '../../native/terminal/useCommand';
 import {Spacer} from '../markup/Spacer';
 
 interface BundlerCommandProps {}
 
 export const BundlerCommand = observer((props: BundlerCommandProps) => {
-  const {project} = useStore();
-  // const commandValue = `source ~/.bash_profile && cd ${project.current?.path} && npm start`;
-  // const commandValue = `ping google.com`;
-  // const commandKey = `${project.current?.name} react native start`;
-  console.log('tst', project.current?.name, project.commandValue, project.commandKey)
-  const {start, stop, output, isRunning} = useCommand({
-    commandValue: project.commandValue,
-    commandKey: project.commandKey,
-  });
+  const {
+    project: {current},
+  } = useStore();
+
+  if (!current) {
+    return null;
+  }
 
   return (
     <View
@@ -31,19 +28,19 @@ export const BundlerCommand = observer((props: BundlerCommandProps) => {
         <Text style={tw.style({fontSize: 18})}>Bundler Command</Text>
         <Spacer size={8} />
         <HoverHighlighButton
-          onPress={start}
+          onPress={() => current.bundlerCommand.start}
           tintColor="#499C54"
           imageSource={require('../../../assets/icons/ic_play_arrow_48px.png')}
         />
         <HoverHighlighButton
-          disabled={!isRunning}
-          onPress={stop}
+          disabled={!current.bundlerCommand.isRunning}
+          onPress={current.bundlerCommand.stop}
           tintColor="#C75450"
           imageSource={require('../../../assets/icons/ic_stop_48px.png')}
         />
       </View>
       <ScrollView style={tw`w-100% h-300px bg-white dark:bg-black`}>
-        <Text>{output}</Text>
+        <Text>{current.bundlerCommand.output}</Text>
       </ScrollView>
     </View>
   );

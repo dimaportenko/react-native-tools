@@ -30,9 +30,13 @@ function addEventListener(
   return emitter.addListener(event, listener);
 }
 
+function removeSubscription(subscription: EmitterSubscription) {
+  return emitter.removeSubscription(subscription);
+}
+
 export const Terminal: TerminalModuleType = {
   runCommand: TerminalModule.runCommand,
   stopCommand: TerminalModule.stopCommand,
   addEventListener,
-  removeSubscription: emitter.removeSubscription,
+  removeSubscription,
 };

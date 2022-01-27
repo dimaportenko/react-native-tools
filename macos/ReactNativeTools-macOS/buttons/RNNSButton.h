@@ -7,12 +7,14 @@
 
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
+#import <React/RCTViewManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface RNNSButton : NSButton
 
 @property (nonatomic, assign, setter=setType:) NSButtonType type;
+@property (nonatomic, copy) RCTBubblingEventBlock onPress;
 
 @end
 

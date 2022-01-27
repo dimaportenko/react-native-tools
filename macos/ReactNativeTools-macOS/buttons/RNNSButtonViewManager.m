@@ -20,6 +20,10 @@ RCT_EXPORT_VIEW_PROPERTY(type, NSUInteger)
 
 RCT_EXPORT_VIEW_PROPERTY(bezelStyle, NSUInteger)
 
+RCT_EXPORT_VIEW_PROPERTY(title, NSString)
+
+RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock);
+
 - (NSView *)view
 {
   RNNSButton *button = [RNNSButton new];

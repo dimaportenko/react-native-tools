@@ -4,6 +4,8 @@ import {requireNativeComponent, ViewProps} from 'react-native';
 type Props = ViewProps & {
   type: NSButtonType;
   bezelStyle: NSBezelStyle;
+  onPress?: () => void;
+  title?: string;
 };
 
 export enum NSButtonType {

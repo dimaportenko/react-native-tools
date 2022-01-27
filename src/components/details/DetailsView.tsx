@@ -9,6 +9,10 @@ import tw from '../../lib/tailwind';
 import {Spacer} from '../markup/Spacer';
 import {observer} from 'mobx-react-lite';
 import {BundlerCommand} from '../commands/BundlerCommand';
+import NSButton, {
+  NSBezelStyle,
+  NSButtonType,
+} from '../../native/nsbutton/NSButton';
 
 interface DetailsViewProps {}
 
@@ -29,6 +33,18 @@ export const DetailsView = observer((props: DetailsViewProps) => {
         style={tw.style({
           fontSize: 18,
         })}>{`Path: ${project.current.path}`}</Text>
+      <Spacer size={5} />
+      <NSButton
+        title="Remove"
+        onPress={() => {
+          if (project.current) {
+            project.removeProject(project.current);
+          }
+        }}
+        style={tw`w-20 h-10`}
+        type={NSButtonType.NSButtonTypeMomentaryLight}
+        bezelStyle={NSBezelStyle.NSBezelStyleRounded}
+      />
       <Spacer size={15} />
       <BundlerCommand />
     </View>

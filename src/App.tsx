@@ -8,58 +8,16 @@
  * @format
  */
 
-import React, {FC, useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, StyleSheet, View, useColorScheme} from 'react-native';
 
 import {useDeviceContext} from 'twrnc';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {rootStore, StoreProvider, trunk, useStore} from './store';
+import {rootStore, StoreProvider, trunk} from './store';
 import {observer} from 'mobx-react-lite';
-import {useCommand} from './native/terminal/useCommand';
-import {ProjectStore} from './store/ProjectStore';
-import {PathPicker} from './native/pathpicker';
-import {Text} from './components/ui/Text';
 import tw from './lib/tailwind';
 import {SideBar} from './components/sidebar/SideBar';
 import {DetailsView} from './components/details/DetailsView';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
 
 const App = () => {
   const [isStoreLoaded, setIsStoreLoaded] = useState(false);
@@ -88,46 +46,6 @@ const App = () => {
   }
 };
 
-const CommandComponent: FC<{
-  project: ProjectStore;
-  commandValue: string;
-  commandKey: string;
-}> = ({commandValue, commandKey, ...props}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const {start, stop, output, isRunning} = useCommand({
-    commandValue,
-    commandKey,
-  });
-
-  return (
-    <View
-      style={{
-        backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        flex: 1,
-      }}>
-      <Section title={props.project.current?.name ?? ''}>
-        {`Project root path: ${props.project.current?.path}`}
-      </Section>
-
-      <Button title={'Start'} onPress={start} />
-
-      <Button title={'Stop'} onPress={stop} />
-
-      <View style={{alignItems: 'center', marginTop: 10}}>
-        <View
-          style={[
-            styles.status,
-            {backgroundColor: isRunning ? 'green' : 'red'},
-          ]}
-        />
-      </View>
-
-      <Section title={commandValue}>{`Output: \n ${output}`}</Section>
-    </View>
-  );
-};
-
 const AppContainer = observer(() => {
   return (
     <View style={tw`flex-row h-100%`}>
@@ -136,48 +54,6 @@ const AppContainer = observer(() => {
       </View>
       <DetailsView />
     </View>
-  );
-});
-
-const AppContainerOld = observer(() => {
-  const {project} = useStore();
-  const isDarkMode = useColorScheme() === 'dark';
-  // const [command, setCommand] = useState('cd ~/work && ls -la');
-
-  const backgroundStyle = {
-    // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    backgroundColor: isDarkMode ? Colors.black : Colors.white,
-    flex: 1,
-  };
-
-  const getDir = async () => {
-    try {
-      const path = await PathPicker.getDirectoryPath();
-      console.log(path);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Button title="Add Project" onPress={getDir} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <CommandComponent
-          commandKey="command 1"
-          project={project}
-          commandValue={'ping google.com'}
-        />
-        <CommandComponent
-          commandKey="command 2"
-          project={project}
-          commandValue={'ping yahoo.com'}
-        />
-      </ScrollView>
-    </SafeAreaView>
   );
 });
 

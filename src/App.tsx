@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     const rehydrate = async () => {
-      await trunk.init();
+      // await trunk.init();
       setIsStoreLoaded(true);
     };
     rehydrate();

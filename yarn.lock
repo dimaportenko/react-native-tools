@@ -4935,6 +4935,11 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+mobx-persist-store@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/mobx-persist-store/-/mobx-persist-store-1.0.4.tgz#233f0c03a708c0f58948c5ff223aa59610a2711a"
+  integrity sha512-zxYvRSGKIJG/2brJC8+u6rJOnhe6HvvIOSaPSoOKdRFw4R91EV+e8PsraiScH3STNkGQlArbjnAUpd7cga1VCA==
+
 mobx-react-lite@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/mobx-react-lite/-/mobx-react-lite-3.2.3.tgz#83d2b32ebf4383cd0dc0d397acbf53a8e9c66765"

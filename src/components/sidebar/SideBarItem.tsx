@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import {Spacer} from '../markup/Spacer';
 import tw from '../../lib/tailwind';
-import {Project} from '../../store/ProjectStore';
 import {useStore} from '../../store';
 import {observer} from 'mobx-react-lite';
+import { Project } from "../../store/Project";
 
 type IconType = 'account' | 'file';
 

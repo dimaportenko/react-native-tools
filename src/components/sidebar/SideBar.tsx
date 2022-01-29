@@ -12,10 +12,10 @@ import {
 import {SideBarItem} from './SideBarItem';
 import {Text} from '../ui/Text';
 import {useStore} from '../../store';
-import {Project} from '../../store/ProjectStore';
 import tw from '../../lib/tailwind';
 import {usePathPicker} from '../../native/pathpicker';
 import {observer} from 'mobx-react-lite';
+import { Project } from "../../store/Project";
 
 interface SideBarProps {}
 
@@ -36,7 +36,7 @@ export const SideBar = observer((props: SideBarProps) => {
   const renderItem = ({item, index}: ListRenderItemInfo<Project>) => {
     return (
       <SideBarItem
-        title={item.name}
+        title={item.label}
         item={item}
         onPress={() => selectProject(item)}
       />

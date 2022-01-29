@@ -1,5 +1,5 @@
 import {createContext, useContext} from 'react';
-import {AsyncTrunk} from 'mobx-sync';
+// import {AsyncTrunk} from 'mobx-sync';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {ProjectStore} from './ProjectStore';
@@ -18,9 +18,9 @@ export class RootStore {
 
 export const rootStore = new RootStore();
 
-export const trunk = new AsyncTrunk(rootStore, {
-  storage: AsyncStorage,
-});
+// export const trunk = new AsyncTrunk(rootStore, {
+//   storage: AsyncStorage,
+// });
 
 export const StoreContext = createContext(rootStore);
 export const StoreProvider = StoreContext.Provider;

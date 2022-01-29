@@ -28,7 +28,7 @@ export const BundlerCommand = observer((props: BundlerCommandProps) => {
         <Text style={tw.style({fontSize: 18})}>Bundler Command</Text>
         <Spacer size={8} />
         <HoverHighlighButton
-          onPress={() => current.bundlerCommand.start}
+          onPress={current.bundlerCommand.start}
           tintColor="#499C54"
           imageSource={require('../../../assets/icons/ic_play_arrow_48px.png')}
         />

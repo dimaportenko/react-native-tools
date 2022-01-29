@@ -26,7 +26,7 @@ export const DetailsView = observer((props: DetailsViewProps) => {
   return (
     <View style={tw`p-15px bg-gray-200 dark:bg-gray-700 flex-1`}>
       <Text style={tw.style({fontSize: 20}, 'font-semibold')}>
-        {project.current.name}
+        {project.current.label}
       </Text>
       <Spacer size={5} />
       <Text

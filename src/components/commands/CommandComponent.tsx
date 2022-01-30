@@ -13,9 +13,8 @@ import {Spacer} from '../markup/Spacer';
 interface CommandComponentProps {}
 
 export const CommandComponent = observer((props: CommandComponentProps) => {
-  const {
-    project: {current},
-  } = useStore();
+  const {project} = useStore();
+  const {current} = project;
 
   if (!current) {
     return null;
@@ -32,7 +31,9 @@ export const CommandComponent = observer((props: CommandComponentProps) => {
         <Text style={tw.style({fontSize: 18})}>Bundler</Text>
         <Spacer size={8} />
         <HoverHighlighButton
-          onPress={current.bundlerCommand.start}
+          onPress={() => {
+            project.startBundler(current);
+          }}
           tintColor="#499C54"
           imageSource={require('../../../assets/icons/ic_play_arrow_48px.png')}
         />

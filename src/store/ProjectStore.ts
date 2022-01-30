@@ -45,6 +45,14 @@ export class ProjectStore {
     }
   }
 
+  startBundler = (proj: Project) => {
+    this.projects.forEach(p => {
+      p.bundlerCommand.isRunning && p.bundlerCommand.stop();
+    });
+
+    proj.bundlerCommand.start();
+  };
+
   setCurrentProject(project: Project) {
     this.current = project;
   }

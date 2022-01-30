@@ -15,7 +15,7 @@ import {useStore} from '../../store/RootStore';
 import tw from '../../lib/tailwind';
 import {usePathPicker} from '../../native/pathpicker';
 import {observer} from 'mobx-react-lite';
-import { Project } from "../../store/Project";
+import {Project} from '../../store/Project';
 
 interface SideBarProps {}
 

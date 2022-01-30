@@ -48,6 +48,14 @@ export const SideBarItem = observer(
           />
           <Spacer size={7} />
           {!!title && <Text>{title}</Text>}
+          <Spacer size={7} />
+          <View style={tw`flex-1`} />
+          <View
+            style={tw.style(
+              `w-10px h-10px rounded-10px mt-2px`,
+              item.bundlerCommand.isRunning ? 'bg-green-500' : 'bg-red-500',
+            )}
+          />
         </View>
       </TouchableWithoutFeedback>
     );

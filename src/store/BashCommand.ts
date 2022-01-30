@@ -1,15 +1,13 @@
 import {EmitterSubscription} from 'react-native';
-import {makeObservable, observable, runInAction} from 'mobx';
+import {computed, makeObservable, observable, runInAction} from 'mobx';
 import {Terminal, TerminalEvent} from '../native/terminal';
-import { PersistBase } from "./PersistBase";
+import {PersistBase} from './PersistBase';
 
 export class BashCommand extends PersistBase {
   key: string;
   value: string;
   output: string;
   isRunning: boolean;
-  outputListener: EmitterSubscription | undefined;
-  finishListener: EmitterSubscription | undefined;
 
   constructor(key: string, value: string) {
     super('BashCommand');
@@ -19,34 +17,35 @@ export class BashCommand extends PersistBase {
     this.isRunning = false;
     this.output = '';
 
-    this.outputListener = undefined;
-    this.finishListener = undefined;
-
     makeObservable(this, {
       key: observable,
       value: observable,
       isRunning: observable,
       output: observable,
+
+      outputSubscriptionKey: computed,
+      finishSubscriptionKey: computed,
     });
   }
 
+  get outputSubscriptionKey() {
+    return `${this.key} output`;
+  }
+
+  get finishSubscriptionKey() {
+    return `${this.key} finish`;
+  }
+
   removeListeners = () => {
-    if (this.outputListener) {
-      // debugger
-      Terminal.removeSubscription(this.outputListener);
-      this.outputListener = undefined;
-    }
-    if (this.finishListener) {
-      Terminal.removeSubscription(this.finishListener);
-      this.finishListener = undefined;
-    }
+    Terminal.removeSubscriptionForKey(this.outputSubscriptionKey);
+    Terminal.removeSubscriptionForKey(this.finishSubscriptionKey);
   };
 
   addListeners = () => {
     const self = this;
-    this.removeListeners();
 
-    this.outputListener = Terminal.addEventListener(
+    Terminal.addEventListenerForKey(
+      this.outputSubscriptionKey,
       TerminalEvent.EVENT_COMMAND_OUTPUT,
       ({outputText, key}) => {
         if (key === self.key) {
@@ -57,7 +56,8 @@ export class BashCommand extends PersistBase {
       },
     );
 
-    this.finishListener = Terminal.addEventListener(
+    Terminal.addEventListenerForKey(
+      this.finishSubscriptionKey,
       TerminalEvent.EVENT_COMMAND_FINISHED,
       ({key}) => {
         if (key === self.key) {

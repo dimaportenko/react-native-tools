@@ -14,6 +14,12 @@ type TerminalModuleType = {
     listener: (data: {outputText: string; key: string}) => void,
   ): EmitterSubscription;
   removeSubscription(subscription: EmitterSubscription): void;
+  addEventListenerForKey: (
+    key: string,
+    event: TerminalEvent,
+    listener: (data: {outputText: string; key: string}) => void,
+  ) => void;
+  removeSubscriptionForKey: (key: string) => void;
 };
 
 const emitter = new NativeEventEmitter(TerminalModule);
@@ -34,9 +40,32 @@ function removeSubscription(subscription: EmitterSubscription) {
   return emitter.removeSubscription(subscription);
 }
 
+const listeners: Record<string, EmitterSubscription | undefined> = {};
+
+const addEventListenerForKey = (
+  key: string,
+  event: TerminalEvent,
+  listener: (data: {outputText: string; key: string}) => void,
+) => {
+  removeSubscriptionForKey(key);
+
+  const subscription = addEventListener(event, listener);
+  listeners[key] = subscription;
+};
+
+const removeSubscriptionForKey = (key: string) => {
+  const previousListener = listeners[key];
+  if (previousListener) {
+    removeSubscription(previousListener);
+    listeners[key] = undefined;
+  }
+};
+
 export const Terminal: TerminalModuleType = {
   runCommand: TerminalModule.runCommand,
   stopCommand: TerminalModule.stopCommand,
   addEventListener,
   removeSubscription,
+  addEventListenerForKey,
+  removeSubscriptionForKey,
 };

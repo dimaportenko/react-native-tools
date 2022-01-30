@@ -40,7 +40,7 @@
 		145312BA1A6C477953FDC86A /* Pods-ReactNativeTools-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTools-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeTools-iOS/Pods-ReactNativeTools-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		34272862C82332F501D182EC /* Pods-ReactNativeTools-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeTools-macOS.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeTools-macOS/Pods-ReactNativeTools-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		38423A3E24576CBC00BC2EAC /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		514201492437B4B30078DB4F /* ReactNativeTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNativeTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		514201492437B4B30078DB4F /* React Native Tools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "React Native Tools.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5142014B2437B4B30078DB4F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5142014C2437B4B30078DB4F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		5142014E2437B4B30078DB4F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -217,7 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* ReactNativeTools.app */,
-				514201492437B4B30078DB4F /* ReactNativeTools.app */,
+				514201492437B4B30078DB4F /* React Native Tools.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -265,7 +265,7 @@
 			);
 			name = "ReactNativeTools-macOS";
 			productName = ReactNativeTools;
-			productReference = 514201492437B4B30078DB4F /* ReactNativeTools.app */;
+			productReference = 514201492437B4B30078DB4F /* React Native Tools.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -604,7 +604,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = ReactNativeTools;
+				PRODUCT_NAME = "React Native Tools";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -627,7 +627,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dimaportenko.ReactNativeTools;
-				PRODUCT_NAME = ReactNativeTools;
+				PRODUCT_NAME = "React Native Tools";
 				SDKROOT = macosx;
 			};
 			name = Release;

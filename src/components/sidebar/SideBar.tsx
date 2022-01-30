@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {SideBarItem} from './SideBarItem';
 import {Text} from '../ui/Text';
-import {useStore} from '../../store';
+import {useStore} from '../../store/RootStore';
 import tw from '../../lib/tailwind';
 import {usePathPicker} from '../../native/pathpicker';
 import {observer} from 'mobx-react-lite';

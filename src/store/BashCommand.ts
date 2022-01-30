@@ -1,4 +1,3 @@
-import {EmitterSubscription} from 'react-native';
 import {computed, makeObservable, observable, runInAction} from 'mobx';
 import {Terminal, TerminalEvent} from '../native/terminal';
 import {PersistBase} from './PersistBase';

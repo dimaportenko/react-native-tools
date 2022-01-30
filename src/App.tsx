@@ -9,11 +9,11 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, StyleSheet, View, useColorScheme} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 
 import {useDeviceContext} from 'twrnc';
 
-import {rootStore, StoreProvider, trunk} from './store';
+import {rootStore, StoreProvider} from './store/RootStore';
 import {observer} from 'mobx-react-lite';
 import tw from './lib/tailwind';
 import {SideBar} from './components/sidebar/SideBar';
@@ -55,31 +55,6 @@ const AppContainer = observer(() => {
       <DetailsView />
     </View>
   );
-});
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginVertical: 16,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  status: {
-    backgroundColor: 'gray',
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
 });
 
 export default App;

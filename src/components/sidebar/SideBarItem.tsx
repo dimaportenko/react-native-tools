@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {Spacer} from '../markup/Spacer';
 import tw from '../../lib/tailwind';
-import {useStore} from '../../store';
+import {useStore} from '../../store/RootStore';
 import {observer} from 'mobx-react-lite';
 import { Project } from "../../store/Project";
 

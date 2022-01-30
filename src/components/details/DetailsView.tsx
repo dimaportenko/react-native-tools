@@ -3,12 +3,12 @@
  */
 import React from 'react';
 import {View} from 'react-native';
-import {useStore} from '../../store';
+import {useStore} from '../../store/RootStore';
 import {Text} from '../ui/Text';
 import tw from '../../lib/tailwind';
 import {Spacer} from '../markup/Spacer';
 import {observer} from 'mobx-react-lite';
-import {BundlerCommand} from '../commands/BundlerCommand';
+import {CommandComponent} from '../commands/CommandComponent';
 import NSButton, {
   NSBezelStyle,
   NSButtonType,
@@ -46,7 +46,7 @@ export const DetailsView = observer((props: DetailsViewProps) => {
         bezelStyle={NSBezelStyle.NSBezelStyleRounded}
       />
       <Spacer size={15} />
-      <BundlerCommand />
+      <CommandComponent />
     </View>
   );
 });

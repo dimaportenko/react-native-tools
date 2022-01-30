@@ -4,15 +4,15 @@
 import React from 'react';
 import {ScrollView, View} from 'react-native';
 import {observer} from 'mobx-react-lite';
-import {useStore} from '../../store';
+import {useStore} from '../../store/RootStore';
 import {Text} from '../ui/Text';
 import tw from '../../lib/tailwind';
 import {HoverHighlighButton} from '../ui/HoverHighlighButton';
 import {Spacer} from '../markup/Spacer';
 
-interface BundlerCommandProps {}
+interface CommandComponentProps {}
 
-export const BundlerCommand = observer((props: BundlerCommandProps) => {
+export const CommandComponent = observer((props: CommandComponentProps) => {
   const {
     project: {current},
   } = useStore();
@@ -23,9 +23,13 @@ export const BundlerCommand = observer((props: BundlerCommandProps) => {
 
   return (
     <View
-      style={tw`border rounded-5px border-opacity-30 border-white dark:border-white p-8px`}>
+      style={tw`
+      p-8px 
+      border rounded-5px border-gray-400 dark:border-gray-600 
+      bg-gray-300 dark:bg-gray-900 dark:bg-opacity-40
+      `}>
       <View style={tw`flex-row pt-2px pb-5px items-center`}>
-        <Text style={tw.style({fontSize: 18})}>Bundler Command</Text>
+        <Text style={tw.style({fontSize: 18})}>Bundler</Text>
         <Spacer size={8} />
         <HoverHighlighButton
           onPress={current.bundlerCommand.start}

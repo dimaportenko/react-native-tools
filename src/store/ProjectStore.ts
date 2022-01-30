@@ -3,14 +3,18 @@ import {action, makeObservable, observable} from 'mobx';
 import {makePersistable} from 'mobx-persist-store';
 import {persistStore} from './persist';
 import {Project} from './Project';
+import {RootStore} from './RootStore';
 
 export class ProjectStore {
   projects: Project[] = [];
   current: Project | undefined = undefined;
+  rootStore: RootStore;
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     this.projects = [];
     this.current = undefined;
+
     makeObservable(this, {
       projects: observable,
       current: observable,

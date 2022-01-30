@@ -41,7 +41,7 @@ export const persistStore: StorageController = {
           }
         };
 
-        console.log('content', content);
+        // console.log('content', content);
         let result = JSON.stringify(content, replacer);
 
         AsyncStorage.setItem(__name, result);

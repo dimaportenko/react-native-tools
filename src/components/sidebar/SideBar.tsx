@@ -28,9 +28,13 @@ export const SideBar = observer((props: SideBarProps) => {
   const colorScheme = useColorScheme();
 
   const addProject = async () => {
-    const path = await getDirectoryPath();
-    if (path) {
-      project.addProjectByPath(path);
+    try {
+      const path = await getDirectoryPath();
+      if (path) {
+        project.addProjectByPath(path);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

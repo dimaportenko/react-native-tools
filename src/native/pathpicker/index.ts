@@ -13,7 +13,7 @@ export const PathPicker: PathPickerType = {
 export const usePathPicker = () => {
   const getDirectoryPath = () => {
     try {
-      return PathPickerModule.getDirectoryPath();
+      return PathPicker.getDirectoryPath();
     } catch (error) {
       console.log(error);
     }

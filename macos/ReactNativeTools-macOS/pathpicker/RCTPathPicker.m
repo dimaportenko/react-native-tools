@@ -21,12 +21,21 @@ RCT_EXPORT_METHOD(getDirectoryPath:(RCTPromiseResolveBlock)resolve
   [panel setCanChooseDirectories:YES];
   [panel setCanChooseFiles:NO];
   
-  if ([panel runModal] != NSModalResponseOK) reject(@"event_failure", @"no directory selected", nil);;
+  NSModalResponse response = [panel runModal];
+  if (response == NSModalResponseCancel) {
+    resolve(NULL);
+    return;
+  }
   
   NSString *path = [[[panel URLs] lastObject] path];
   RCTLogInfo(@"Selected path - %@", path);
   
-  resolve(path);
+  if (response == NSModalResponseOK) {
+    resolve(path);
+  } else {
+    reject(@"event_failure", @"no directory selected", nil);
+  }
+  
 }
 
 - (dispatch_queue_t)methodQueue

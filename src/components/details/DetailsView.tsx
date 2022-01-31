@@ -1,8 +1,8 @@
 /**
  * Created by Dima Portenko on 22.01.2022
  */
-import React from 'react';
-import {View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {TextInput, View} from 'react-native';
 import {useStore} from '../../store/RootStore';
 import {Text} from '../ui/Text';
 import tw from '../../lib/tailwind';
@@ -17,7 +17,15 @@ import NSButton, {
 interface DetailsViewProps {}
 
 export const DetailsView = observer((props: DetailsViewProps) => {
+  const [renaming, setRenaming] = useState(false);
+  const titleInputRef = useRef<TextInput>(null);
   const {project} = useStore();
+
+  useEffect(() => {
+    if (renaming) {
+      titleInputRef.current?.focus();
+    }
+  }, [renaming, titleInputRef]);
 
   if (!project.current) {
     return null;
@@ -25,26 +33,52 @@ export const DetailsView = observer((props: DetailsViewProps) => {
 
   return (
     <View style={tw`p-15px bg-gray-200 dark:bg-gray-700 flex-1`}>
-      <Text style={tw.style({fontSize: 20}, 'font-semibold')}>
-        {project.current.label}
-      </Text>
+      {/*<Text style={tw.style({fontSize: 20}, 'font-semibold')}>*/}
+      {/*  {project.current.label}*/}
+      {/*</Text>*/}
+      <View style={tw`w-50%`}>
+        <TextInput
+          ref={titleInputRef}
+          style={tw.style({fontSize: 20}, 'font-semibold h-25px')}
+          value={project.current.label}
+          onChange={event => {
+            project.current?.setLabel(event.nativeEvent.text);
+          }}
+          editable={renaming}
+          onSubmitEditing={() => setRenaming(false)}
+          selectTextOnFocus
+          onBlur={() => setRenaming(false)}
+        />
+      </View>
+
       <Spacer size={5} />
       <Text
-        style={tw.style({
+        style={tw.style('ml-3px', {
           fontSize: 18,
         })}>{`Path: ${project.current.path}`}</Text>
       <Spacer size={5} />
-      <NSButton
-        title="Remove"
-        onPress={() => {
-          if (project.current) {
-            project.removeProject(project.current);
-          }
-        }}
-        style={tw`w-20 h-10`}
-        type={NSButtonType.NSButtonTypeMomentaryLight}
-        bezelStyle={NSBezelStyle.NSBezelStyleRounded}
-      />
+      <View style={tw`flex-row`}>
+        <NSButton
+          title="Delete"
+          onPress={() => {
+            if (project.current) {
+              project.removeProject(project.current);
+            }
+          }}
+          style={tw`w-20 h-10`}
+          type={NSButtonType.NSButtonTypeMomentaryLight}
+          bezelStyle={NSBezelStyle.NSBezelStyleRounded}
+        />
+        <NSButton
+          title="Rename"
+          onPress={() => {
+            setRenaming(true);
+          }}
+          style={tw`w-20 h-10`}
+          type={NSButtonType.NSButtonTypeMomentaryLight}
+          bezelStyle={NSBezelStyle.NSBezelStyleRounded}
+        />
+      </View>
       <Spacer size={15} />
       <CommandComponent />
     </View>

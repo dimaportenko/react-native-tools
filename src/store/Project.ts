@@ -1,6 +1,6 @@
 import {BashCommand} from './BashCommand';
-import {makeObservable, observable} from 'mobx';
-import { PersistBase } from "./PersistBase";
+import {action, makeObservable, observable, runInAction} from 'mobx';
+import {PersistBase} from './PersistBase';
 
 export class Project extends PersistBase {
   id: number;
@@ -25,6 +25,12 @@ export class Project extends PersistBase {
       path: observable,
       label: observable,
       bundlerCommand: observable,
+
+      setLabel: action,
     });
   }
+
+  setLabel = (text: string) => {
+    this.label = text;
+  };
 }

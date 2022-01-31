@@ -1,4 +1,3 @@
-import {EmitterSubscription} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BashCommand} from './BashCommand';
 import {Project} from './Project';
@@ -10,7 +9,9 @@ const modelMap = new Map<string, Class>([
   ['Project', Project],
 ]);
 
-// const ignoreList = [EmitterSubscription];
+// AsyncStorage.clear(error => {
+//   console.warn(error);
+// });
 
 export const persistStore: StorageController = {
   setItem: (__name: string, content: Object) => {

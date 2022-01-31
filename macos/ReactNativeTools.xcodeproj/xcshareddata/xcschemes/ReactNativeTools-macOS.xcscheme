@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "514201482437B4B30078DB4F"
-               BuildableName = "ReactNativeTools.app"
+               BuildableName = "React Native Tools.app"
                BlueprintName = "ReactNativeTools-macOS"
                ReferencedContainer = "container:ReactNativeTools.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "ReactNativeTools.app"
+            BuildableName = "React Native Tools.app"
             BlueprintName = "ReactNativeTools-macOS"
             ReferencedContainer = "container:ReactNativeTools.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "514201482437B4B30078DB4F"
-            BuildableName = "ReactNativeTools.app"
+            BuildableName = "React Native Tools.app"
             BlueprintName = "ReactNativeTools-macOS"
             ReferencedContainer = "container:ReactNativeTools.xcodeproj">
          </BuildableReference>

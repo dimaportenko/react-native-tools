@@ -45,11 +45,21 @@ export const SideBar = observer((props: SideBarProps) => {
 
   return (
     <View style={tw`flex-1 bg-gray-300 dark:bg-gray-600 pt-10px`}>
-      <FlatList
-        data={project.projects}
-        renderItem={renderItem}
-        keyExtractor={item => `${item.path}`}
-      />
+      {/*<FlatList*/}
+      {/*  data={project.projects}*/}
+      {/*  renderItem={renderItem}*/}
+      {/*  keyExtractor={item => `${item.path}`}*/}
+      {/*/>*/}
+      <View style={tw`flex-1`}>
+        {project.projects.map(proj => (
+          <SideBarItem
+            key={proj.path}
+            title={proj.label}
+            item={proj}
+            onPress={() => selectProject(proj)}
+          />
+        ))}
+      </View>
       <TouchableOpacity onPress={addProject}>
         <View
           style={tw`w-100% items-center h-30px justify-center bg-blue-100 dark:bg-blue-600`}>

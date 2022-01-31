@@ -36,13 +36,13 @@ export const CommandComponent = observer((props: CommandComponentProps) => {
           onPress={() => {
             project.startBundler(current);
           }}
-          // tintColor="#499C54"
+          tintColor="#5C585F"
           imageSource={require('../../../assets/icons/ic_play_arrow_48px.png')}
         />
         <HoverHighlighButton
           disabled={!current.bundlerCommand.isRunning}
           onPress={current.bundlerCommand.stop}
-          // tintColor="#C75450"
+          tintColor="#5C585F"
           imageSource={require('../../../assets/icons/ic_stop_48px.png')}
         />
         <View style={tw`flex-1`} />
@@ -68,7 +68,7 @@ export const CommandComponent = observer((props: CommandComponentProps) => {
       </View>
       {expand && (
         <ScrollView style={tw`w-100% h-300px bg-white dark:bg-black mt-3px`}>
-          <Text>{current.bundlerCommand.output}</Text>
+          <Text selectable>{current.bundlerCommand.output}</Text>
         </ScrollView>
       )}
     </View>

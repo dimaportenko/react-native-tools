@@ -1,4 +1,4 @@
-import {action, makeObservable, observable} from 'mobx';
+import {action, computed, makeObservable, observable} from 'mobx';
 
 import {makePersistable} from 'mobx-persist-store';
 import {persistStore} from './persist';
@@ -7,30 +7,37 @@ import {RootStore} from './RootStore';
 
 export class ProjectStore {
   projects: Project[] = [];
-  current: Project | undefined = undefined;
+  currentProjectId: number | undefined = undefined;
   rootStore: RootStore;
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
     this.projects = [];
-    this.current = undefined;
+    this.currentProjectId = undefined;
 
     makeObservable(this, {
       projects: observable,
-      current: observable,
+      currentProjectId: observable,
+
       addProjectByPath: action,
       setCurrentProject: action,
       removeProject: action,
+      setProjectLabel: action,
+
+      current: computed,
     });
 
     makePersistable(this, {
       name: 'ProjectStore',
-      properties: ['projects', 'current'],
+      properties: ['projects', 'currentProjectId'],
       storage: persistStore,
       stringify: false,
     });
   }
 
+  get current() {
+    return this.projects.find(p => p.id === this.currentProjectId);
+  }
   addProjectByPath(path: string) {
     const project = new Project(path);
 
@@ -41,7 +48,7 @@ export class ProjectStore {
     }
 
     if (!this.current) {
-      this.current = found || project;
+      this.currentProjectId = found?.id ?? project.id;
     }
   }
 
@@ -53,15 +60,20 @@ export class ProjectStore {
     proj.bundlerCommand.start();
   };
 
-  setCurrentProject(project: Project) {
-    this.current = project;
-  }
+  setCurrentProject = (project: Project) => {
+    this.currentProjectId = project.id;
+  };
+
+  setProjectLabel = (project: Project, label: string) => {
+    const proj = this.projects.find(p => p.id === project.id);
+    proj?.setLabel(label);
+  };
 
   removeProject(project: Project) {
     this.projects = this.projects.filter(p => p.id !== project.id);
 
     if (this.current?.id === project.id) {
-      this.current = this.projects?.[0];
+      this.currentProjectId = this.projects?.[0].id;
     }
   }
 }

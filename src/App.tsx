@@ -9,7 +9,7 @@
  */
 
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, useColorScheme, View} from 'react-native';
 
 import {useDeviceContext} from 'twrnc';
 

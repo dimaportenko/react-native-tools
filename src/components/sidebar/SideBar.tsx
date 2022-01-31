@@ -7,6 +7,7 @@ import {
   FlatList,
   ListRenderItemInfo,
   TouchableOpacity,
+  useColorScheme,
   View,
 } from 'react-native';
 import {SideBarItem} from './SideBarItem';
@@ -23,6 +24,8 @@ export const SideBar = observer((props: SideBarProps) => {
   const {project} = useStore();
 
   const {getDirectoryPath} = usePathPicker();
+
+  const colorScheme = useColorScheme();
 
   const addProject = async () => {
     const path = await getDirectoryPath();
@@ -44,7 +47,11 @@ export const SideBar = observer((props: SideBarProps) => {
   };
 
   return (
-    <View style={tw`flex-1 bg-gray-300 dark:bg-gray-600 pt-10px`}>
+    <View
+      style={tw.style(
+        `flex-1 pt-10px`,
+        colorScheme === 'dark' ? 'bg-gray-600' : 'bg-gray-300',
+      )}>
       {/*<FlatList*/}
       {/*  data={project.projects}*/}
       {/*  renderItem={renderItem}*/}

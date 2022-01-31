@@ -4,11 +4,17 @@ import {makePersistable} from 'mobx-persist-store';
 import {persistStore} from './persist';
 import {Project} from './Project';
 import {RootStore} from './RootStore';
+import {BashCommand} from './BashCommand';
 
 export class ProjectStore {
   projects: Project[] = [];
   currentProjectId: number | undefined = undefined;
   rootStore: RootStore;
+
+  kill8081: BashCommand = new BashCommand(
+    'kill8081',
+    'pid=$(lsof -i:8081 -t); kill -TERM $pid || kill -KILL $pid',
+  );
 
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
@@ -38,6 +44,7 @@ export class ProjectStore {
   get current() {
     return this.projects.find(p => p.id === this.currentProjectId);
   }
+
   addProjectByPath(path: string) {
     const project = new Project(path);
 

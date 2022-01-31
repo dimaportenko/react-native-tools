@@ -2,7 +2,7 @@
  * Created by Dima Portenko on 22.01.2022
  */
 import React, {useEffect, useRef, useState} from 'react';
-import {TextInput, View} from 'react-native';
+import {ActivityIndicator, TextInput, useColorScheme, View} from 'react-native';
 import {useStore} from '../../store/RootStore';
 import {Text} from '../ui/Text';
 import tw from '../../lib/tailwind';
@@ -20,6 +20,7 @@ export const DetailsView = observer((props: DetailsViewProps) => {
   const [renaming, setRenaming] = useState(false);
   const titleInputRef = useRef<TextInput>(null);
   const {project} = useStore();
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (renaming) {
@@ -32,7 +33,11 @@ export const DetailsView = observer((props: DetailsViewProps) => {
   }
 
   return (
-    <View style={tw`p-15px bg-gray-200 dark:bg-gray-700 flex-1`}>
+    <View
+      style={tw.style(
+        `p-15px flex-1`,
+        colorScheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200',
+      )}>
       {/*<Text style={tw.style({fontSize: 20}, 'font-semibold')}>*/}
       {/*  {project.current.label}*/}
       {/*</Text>*/}
@@ -78,6 +83,18 @@ export const DetailsView = observer((props: DetailsViewProps) => {
           type={NSButtonType.NSButtonTypeMomentaryLight}
           bezelStyle={NSBezelStyle.NSBezelStyleRounded}
         />
+      </View>
+      <View style={tw`flex-row`}>
+        <NSButton
+          title="Kill 8081"
+          onPress={() => {
+            project.kill8081.start();
+          }}
+          style={tw`w-20 h-10`}
+          type={NSButtonType.NSButtonTypeMomentaryLight}
+          bezelStyle={NSBezelStyle.NSBezelStyleRounded}
+        />
+        {project.kill8081.isRunning && <ActivityIndicator size="small" />}
       </View>
       <Spacer size={15} />
       <CommandComponent />

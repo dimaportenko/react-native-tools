@@ -3,14 +3,16 @@ import {Terminal, TerminalEvent} from '../native/terminal';
 import {PersistBase} from './PersistBase';
 
 export class BashCommand extends PersistBase {
+  title?: string;
   key: string;
   value: string;
   output: string;
   isRunning: boolean;
 
-  constructor(key: string, value: string) {
+  constructor(key: string, value: string, title?: string) {
     super('BashCommand');
 
+    this.title = title;
     this.key = key;
     this.value = value;
     this.isRunning = false;
@@ -74,7 +76,7 @@ export class BashCommand extends PersistBase {
     this.addListeners();
 
     runInAction(() => {
-      this.output = '';
+      this.output = `${this.value}\n\n`;
       this.isRunning = true;
     });
 

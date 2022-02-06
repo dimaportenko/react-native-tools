@@ -18,7 +18,7 @@ target 'ReactNativeTools-macOS' do
 end
 
 target 'ReactNativeTools-iOS' do
-  platform :ios, '10'
+  platform :ios, '11'
   use_native_modules!
   use_react_native!(:path => '../node_modules/react-native-macos')
 

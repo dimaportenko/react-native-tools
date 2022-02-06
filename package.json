@@ -7,16 +7,20 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.15",
     "mobx": "^6.3.12",
     "mobx-persist-store": "^1.0.4",
     "mobx-react-lite": "^3.2.3",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "react": "17.0.1",
     "react-native": "0.64.3",
-    "react-native-macos": "^0.64.21",
+    "react-native-macos": "^0.64.26",
+    "react-native-mmkv": "^2.0.1",
     "twrnc": "^2.2.0"
   },
   "devDependencies": {

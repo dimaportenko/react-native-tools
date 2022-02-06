@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BashCommand} from './BashCommand';
 import {Project} from './Project';
 import {StorageController} from 'mobx-persist-store/lib/esm2017/types';
+import {MMKV} from 'react-native-mmkv';
+
+const storage = new MMKV();
 
 type Class = {new (...args: any[]): any};
 const modelMap = new Map<string, Class>([
@@ -45,7 +48,8 @@ export const persistStore: StorageController = {
         // console.log('content', content);
         let result = JSON.stringify(content, replacer);
 
-        AsyncStorage.setItem(__name, result);
+        storage.set(__name, result);
+
         resolve();
       } catch (error) {
         console.warn(error);
@@ -53,10 +57,11 @@ export const persistStore: StorageController = {
       }
     });
   },
-  removeItem: AsyncStorage.removeItem,
+  removeItem: storage.delete,
   getItem: (key: string) => {
     return new Promise(async resolve => {
-      let item = await AsyncStorage.getItem(key);
+      let item = await storage.getString(key);
+      item = item ?? '{}';
 
       let reviver = (__name: string, value: any): Object => {
         if (__name.length === 0) return value;

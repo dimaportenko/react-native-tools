@@ -281,6 +281,7 @@
 					};
 					514201482437B4B30078DB4F = {
 						CreatedOnToolsVersion = 11.4;
+						DevelopmentTeam = YPCUW5ZRNX;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -597,6 +598,7 @@
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = YPCUW5ZRNX;
 				INFOPLIST_FILE = "ReactNativeTools-macos/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -606,7 +608,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.dimaportenko.ReactNativeTools.dev;
 				PRODUCT_NAME = "React Native Tools";
 				SDKROOT = macosx;
 			};

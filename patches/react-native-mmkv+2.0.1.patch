@@ -1,6 +1,6 @@
 diff --git a/node_modules/react-native-mmkv/.DS_Store b/node_modules/react-native-mmkv/.DS_Store
 new file mode 100644
-index 0000000..f3ca4f1
+index 0000000..21b4bde
 Binary files /dev/null and b/node_modules/react-native-mmkv/.DS_Store differ
 diff --git a/node_modules/react-native-mmkv/MMKV/.DS_Store b/node_modules/react-native-mmkv/MMKV/.DS_Store
 new file mode 100644
@@ -8,13 +8,83 @@ index 0000000..c7195b2
 Binary files /dev/null and b/node_modules/react-native-mmkv/MMKV/.DS_Store differ
 diff --git a/node_modules/react-native-mmkv/ios/.DS_Store b/node_modules/react-native-mmkv/ios/.DS_Store
 new file mode 100644
-index 0000000..2aaa0a1
+index 0000000..e0eaaf5
 Binary files /dev/null and b/node_modules/react-native-mmkv/ios/.DS_Store differ
+diff --git a/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/contents.xcworkspacedata b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+new file mode 100644
+index 0000000..919434a
+--- /dev/null
++++ b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<Workspace
++   version = "1.0">
++   <FileRef
++      location = "self:">
++   </FileRef>
++</Workspace>
+diff --git a/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+new file mode 100644
+index 0000000..18d9810
+--- /dev/null
++++ b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<plist version="1.0">
++<dict>
++	<key>IDEDidComputeMac32BitWarning</key>
++	<true/>
++</dict>
++</plist>
+diff --git a/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate
+new file mode 100644
+index 0000000..54c4bf1
+Binary files /dev/null and b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate differ
+diff --git a/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/xcuserdata/dmytro.xcuserdatad/xcschemes/xcschememanagement.plist b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/xcuserdata/dmytro.xcuserdatad/xcschemes/xcschememanagement.plist
+new file mode 100644
+index 0000000..9d0117f
+--- /dev/null
++++ b/node_modules/react-native-mmkv/ios/Mmkv.xcodeproj/xcuserdata/dmytro.xcuserdatad/xcschemes/xcschememanagement.plist
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
++<plist version="1.0">
++<dict>
++	<key>SchemeUserState</key>
++	<dict>
++		<key>Mmkv.xcscheme_^#shared#^_</key>
++		<dict>
++			<key>orderHint</key>
++			<integer>0</integer>
++		</dict>
++	</dict>
++</dict>
++</plist>
 diff --git a/node_modules/react-native-mmkv/ios/MmkvHostObject.mm b/node_modules/react-native-mmkv/ios/MmkvHostObject.mm
-index c06da75..ce8e124 100644
+index c06da75..77fe27a 100644
 --- a/node_modules/react-native-mmkv/ios/MmkvHostObject.mm
 +++ b/node_modules/react-native-mmkv/ios/MmkvHostObject.mm
-@@ -61,22 +61,22 @@
+@@ -12,6 +12,18 @@
+ 
+ MmkvHostObject::MmkvHostObject(NSString* instanceId, NSString* path, NSString* cryptKey) {
+   NSData* cryptData = cryptKey == nil ? nil : [cryptKey dataUsingEncoding:NSUTF8StringEncoding];
++#if TARGET_OS_OSX
++    if (path == nil) {
++        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
++        NSString *documentPath = (NSString *) [paths firstObject];
++
++        NSString *appname =
++            [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleIdentifierKey];
++        documentPath = [documentPath stringByAppendingPathComponent:appname];
++
++        path = [documentPath stringByAppendingPathComponent:@"mmkv"];
++    }
++#endif
+   instance = [MMKV mmkvWithID:instanceId cryptKey:cryptData rootPath:path];
+   if (instance == nil) {
+     throw std::runtime_error("Failed to create MMKV instance!");
+@@ -61,22 +73,45 @@
      });
    }
  
@@ -50,12 +120,35 @@ index c06da75..ce8e124 100644
 +//      return jsi::Value(value);
 +//    });
 +//  }
++//    jsi::Function::createFromHostFunction(runtime,
++//                                          jsi::PropNameID::forAscii(runtime, "getBoolMMKV"),
++//                                          2,
++//                                          [](jsi::Runtime &runtime,
++//                                             const jsi::Value &thisValue,
++//                                             const jsi::Value *arguments,
++//                                                               size_t count) -> jsi::Value
++//                                          {
++//            MMKV *kv = convertJSIStringToNSString(runtime, arguments[1].getString(runtime));
++//
++//            if (!kv) {
++//                return jsi::Value::undefined();
++//            }
++//
++//            NSString *key = convertJSIStringToNSString(
++//                                                       runtime, arguments[0].getString(runtime));
++//
++//            if ([kv containsKey:key]) {
++//                return jsi::Value([kv getBoolForKey:key]);
++//            } else {
++//                return jsi::Value::null();
++//            }
++//        });
  
    if (propName == "getString") {
      // MMKV.getString(key: string)
 diff --git a/node_modules/react-native-mmkv/macos/.DS_Store b/node_modules/react-native-mmkv/macos/.DS_Store
 new file mode 100644
-index 0000000..a650d60
+index 0000000..e9d65af
 Binary files /dev/null and b/node_modules/react-native-mmkv/macos/.DS_Store differ
 diff --git a/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/project.pbxproj b/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/project.pbxproj
 new file mode 100644
@@ -482,7 +575,7 @@ index 0000000..18d9810
 +</plist>
 diff --git a/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate b/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate
 new file mode 100644
-index 0000000..056def3
+index 0000000..555ae3f
 Binary files /dev/null and b/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/project.xcworkspace/xcuserdata/dmytro.xcuserdatad/UserInterfaceState.xcuserstate differ
 diff --git a/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/xcuserdata/dmytro.xcuserdatad/xcschemes/xcschememanagement.plist b/node_modules/react-native-mmkv/macos/Mmkv.xcodeproj/xcuserdata/dmytro.xcuserdatad/xcschemes/xcschememanagement.plist
 new file mode 100644

@@ -4,6 +4,7 @@ const {PathPicker: PathPickerModule} = NativeModules;
 
 type PathPickerType = {
   getDirectoryPath: () => Promise<string>;
+  getApplicationSupportDirectoryPath: () => string;
 };
 
 export const PathPicker: PathPickerType = {

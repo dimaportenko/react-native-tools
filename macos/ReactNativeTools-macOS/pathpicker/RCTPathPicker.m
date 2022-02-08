@@ -35,7 +35,16 @@ RCT_EXPORT_METHOD(getDirectoryPath:(RCTPromiseResolveBlock)resolve
   } else {
     reject(@"event_failure", @"no directory selected", nil);
   }
+}
+
+RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(getApplicationSupportDirectoryPath)
+{
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  NSString *path = (NSString *) [paths firstObject];
+  NSString *appBundle = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleIdentifierKey];
+  path = [path stringByAppendingPathComponent:appBundle];
   
+  return path;
 }
 
 - (dispatch_queue_t)methodQueue

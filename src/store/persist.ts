@@ -3,8 +3,14 @@ import {BashCommand} from './BashCommand';
 import {Project} from './Project';
 import {StorageController} from 'mobx-persist-store/lib/esm2017/types';
 import {MMKV} from 'react-native-mmkv';
+import {PathPicker} from '../native/pathpicker';
 
-const storage = new MMKV();
+const mmkvPath = `${PathPicker.getApplicationSupportDirectoryPath()}/mmkv/`;
+
+const storage = new MMKV({
+  id: 'mmkv.default',
+  path: mmkvPath,
+});
 
 type Class = {new (...args: any[]): any};
 const modelMap = new Map<string, Class>([

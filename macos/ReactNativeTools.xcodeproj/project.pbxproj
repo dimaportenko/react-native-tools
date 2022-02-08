@@ -134,6 +134,7 @@
 		5142014A2437B4B30078DB4F /* ReactNativeTools-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				664A3A4F27B2FF3000EE1367 /* filesystem */,
 				66A34D27279D95FA00C6B892 /* buttons */,
 				66A34D24279C122700C6B892 /* rnviews */,
 				66D770C527920EB400E3137A /* pathpicker */,
@@ -150,6 +151,13 @@
 				514201592437B4B40078DB4F /* ReactNativeTools.entitlements */,
 			);
 			path = "ReactNativeTools-macOS";
+			sourceTree = "<group>";
+		};
+		664A3A4F27B2FF3000EE1367 /* filesystem */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = filesystem;
 			sourceTree = "<group>";
 		};
 		66A34D24279C122700C6B892 /* rnviews */ = {

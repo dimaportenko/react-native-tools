@@ -20,7 +20,7 @@
     "react": "17.0.1",
     "react-native": "0.64.3",
     "react-native-macos": "^0.64.26",
-    "react-native-mmkv": "^2.0.1",
+    "react-native-mmkv": "github:dimaportenko/react-native-mmkv#feat/macos-target",
     "twrnc": "^2.2.0"
   },
   "devDependencies": {

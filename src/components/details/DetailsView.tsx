@@ -20,7 +20,8 @@ import NSButton, {
   NSButtonType,
 } from '../../native/nsbutton/NSButton';
 import {NewCommand} from '../commands/NewCommand';
-import { CustomCommand } from "../commands/CustomCommand";
+import {CustomCommand} from '../commands/CustomCommand';
+import {HoverHighlighButton} from '../ui/HoverHighlighButton';
 
 interface DetailsViewProps {}
 
@@ -53,26 +54,54 @@ export const DetailsView = observer((props: DetailsViewProps) => {
   return (
     <View
       style={tw.style(
-        `p-15px flex-1`,
+        'p-15px flex-1',
         colorScheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200',
       )}>
       <ScrollView>
         {/*<Text style={tw.style({fontSize: 20}, 'font-semibold')}>*/}
         {/*  {project.current.label}*/}
         {/*</Text>*/}
-        <View style={tw`w-50%`}>
-          <TextInput
-            ref={titleInputRef}
-            style={tw.style({fontSize: 20}, 'font-semibold h-25px')}
-            value={project.current.label}
-            onChange={event => {
-              project.current?.setLabel(event.nativeEvent.text);
-            }}
-            editable={renaming}
-            onSubmitEditing={() => setRenaming(false)}
-            selectTextOnFocus
-            onBlur={() => setRenaming(false)}
-          />
+        <View style={tw`w-50% flex-row items-center`}>
+          {renaming ? (
+            <TextInput
+              maxLength={400}
+              ref={titleInputRef}
+              style={tw.style({fontSize: 20}, 'font-semibold h-25px w-100%')}
+              value={project.current.label}
+              onChange={event => {
+                project.current?.setLabel(event.nativeEvent.text);
+              }}
+              editable={renaming}
+              onSubmitEditing={() => setRenaming(false)}
+              selectTextOnFocus
+              onBlur={() => setRenaming(false)}
+            />
+          ) : (
+            <>
+              <Text style={tw.style({fontSize: 20}, 'font-semibold h-25px')}>
+                {project.current.label}
+              </Text>
+              <Spacer size={15} />
+              <HoverHighlighButton
+                onPress={() => {
+                  setRenaming(true);
+                }}
+                style={tw`w-25px h-30px items-center justify-center`}
+                imgStyle={tw`w-20px h-20px`}
+                imageSource={require('../../../assets/icons/ic_edit_48px.png')}
+              />
+              <HoverHighlighButton
+                onPress={() => {
+                  if (project.current) {
+                    project.removeProject(project.current);
+                  }
+                }}
+                style={tw`w-25px h-30px items-center justify-center`}
+                imgStyle={tw`w-20px h-20px`}
+                imageSource={require('../../../assets/icons/ic_delete_forever_48px.png')}
+              />
+            </>
+          )}
         </View>
 
         <Spacer size={5} />
@@ -81,28 +110,7 @@ export const DetailsView = observer((props: DetailsViewProps) => {
             fontSize: 18,
           })}>{`Path: ${project.current.path}`}</Text>
         <Spacer size={5} />
-        <View style={tw`flex-row`}>
-          <NSButton
-            title="Delete"
-            onPress={() => {
-              if (project.current) {
-                project.removeProject(project.current);
-              }
-            }}
-            style={tw`w-20 h-10`}
-            type={NSButtonType.NSButtonTypeMomentaryLight}
-            bezelStyle={NSBezelStyle.NSBezelStyleRounded}
-          />
-          <NSButton
-            title="Rename"
-            onPress={() => {
-              setRenaming(true);
-            }}
-            style={tw`w-20 h-10`}
-            type={NSButtonType.NSButtonTypeMomentaryLight}
-            bezelStyle={NSBezelStyle.NSBezelStyleRounded}
-          />
-        </View>
+
         <View style={tw`flex-row`}>
           <NSButton
             title="Kill 8081"

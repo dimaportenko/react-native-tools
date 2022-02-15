@@ -4,11 +4,11 @@
 import React, {useState} from 'react';
 import {
   Image,
-  ImageSourcePropType,
+  ImageSourcePropType, ImageStyle,
   Pressable,
   PressableProps,
-  View,
-} from 'react-native';
+  View
+} from "react-native";
 import tw from '../../lib/tailwind';
 
 interface HoverHighlighButtonProps extends PressableProps {
@@ -16,10 +16,12 @@ interface HoverHighlighButtonProps extends PressableProps {
   disabledTintColor?: string;
   imageSource?: ImageSourcePropType;
   onPress?: () => void;
+  imgStyle?: ImageStyle;
 }
 
 export const HoverHighlighButton = ({
   style,
+  imgStyle,
   imageSource,
   tintColor = '#4C5052',
   disabledTintColor = '#4C5052',
@@ -63,6 +65,7 @@ export const HoverHighlighButton = ({
             style={tw.style(
               {tintColor: disabled ? disabledTintColor : tintColor},
               'w-30px h-30px',
+              imgStyle,
             )}
             resizeMode="contain"
           />

@@ -1,7 +1,0 @@
-diff --git a/node_modules/react-native-mmkv/index.ts b/node_modules/react-native-mmkv/index.ts
-new file mode 100644
-index 0000000..cba1843
---- /dev/null
-+++ b/node_modules/react-native-mmkv/index.ts
-@@ -0,0 +1 @@
-+export * from './src/index';
